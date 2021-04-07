@@ -5,6 +5,7 @@ GITHUB_USER := $(shell echo $(GITHUB_USER) | sed 's/@/%40/g')
 GITHUB_TOKEN ?=
 
 -include test/Makefile
+-include mock-component-image/Makefile
 
 BUILD_DIR ?= build
 
@@ -177,3 +178,18 @@ update-manifest:
 
 set-copyright:
 	@bash ./cicd-scripts/set-copyright.sh
+
+build-mock-image:
+	make mock-build-image
+
+cleanup-mock-image:
+	make mock-cleanup
+
+prep-mock-install:
+	export PRODUCT_VERSION=$(shell cat COMPONENT_VERSION); \
+	make build-mock-image
+	cp mock-component-image/results/* ./image-manifests
+
+## Apply the MultiClusterHub CR
+mock-cr:
+	cat deploy/crds/operator.open-cluster-management.io_v1_multiclusterhub_cr.yaml | yq w - "spec.imagePullSecret" "quay-secret" | yq w - "spec.disableHubSelfManagement" "true" |  oc apply -f -
