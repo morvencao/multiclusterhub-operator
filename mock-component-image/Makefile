@@ -29,6 +29,7 @@ gen-mock-image-manifest:
 
 get-image-sha:
 	cd ${CURR_DIR}; \
+	python3 ./scripts/check_env_vars.py && \
 	. ./scripts/get-mock-image-sha.env && \
 	python3 ./scripts/check_sha_env_var.py
 

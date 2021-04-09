@@ -1,7 +1,7 @@
 import shutil
 import os
 import json
-from check_env_vars import _product_version, _image_remote, _image_name, _image_tag
+from check_env_vars import _product_version, _image_registry, _image_name, _image_tag
 from check_sha_env_var import _image_sha
 
 _image_keys = ["multicloud_manager", "work", "registration", "multiclusterhub_repo", "hub_mock_component_image"]
@@ -19,7 +19,7 @@ with open(_new_image_man_destination, 'a') as f:
     for _ik in _image_keys:
         _entry = {
             "image-name": _image_name,
-            "image-remote": _image_remote,
+            "image-remote": _image_registry,
             "image-digest": "sha256:{}".format(_image_sha),
             "image-key": _ik
         }
