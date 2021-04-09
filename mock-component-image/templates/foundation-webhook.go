@@ -137,7 +137,7 @@ func webhookRun() error {
 
 	server := &http.Server{
 		Addr:      ":8000",
-		TLSConfig: configTLS(),
+		TLSConfig: configWebhookTLS(),
 	}
 	err := server.ListenAndServeTLS("", "")
 	if err != nil {
@@ -185,7 +185,7 @@ func webhookServer(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func configTLS() *tls.Config {
+func configWebhookTLS() *tls.Config {
 	certFile := "/var/run/ocm-webhook/tls.crt"
 	keyFile := "/var/run/ocm-webhook/tls.key"
 	sCert, err := tls.LoadX509KeyPair(certFile, keyFile)

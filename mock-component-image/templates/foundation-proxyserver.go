@@ -6,16 +6,12 @@ import (
 	"net/http"
 )
 
-func Ping(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
-}
-
 func main() {
 	http.HandleFunc("/healthz", Ping)
 
 	server := &http.Server{
 		Addr:      ":6443",
-		TLSConfig: configTLS(),
+		TLSConfig: configProxyServerTLS(),
 	}
 	err := server.ListenAndServeTLS("localhost.crt", "localhost.key")
 	if err != nil {
@@ -23,7 +19,7 @@ func main() {
 	}
 }
 
-func configTLS() *tls.Config {
+func configProxyServerTLS() *tls.Config {
 	certFile := "/var/run/ocm-webhook/tls.crt"
 	keyFile := "/var/run/ocm-webhook/tls.key"
 	sCert, err := tls.LoadX509KeyPair(certFile, keyFile)

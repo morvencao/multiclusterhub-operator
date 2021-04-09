@@ -6,6 +6,7 @@ GITHUB_TOKEN ?=
 
 -include test/Makefile
 -include mock-component-image/Makefile
+-include Makefile.prow
 
 BUILD_DIR ?= build
 
